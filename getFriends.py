@@ -2,13 +2,15 @@
 Use itchat to find many interesting story of WeChat daily
 import itchat
 itchat.login()
-#获取好友信息
-#此处会弹出二维码登陆
+
+#Get friends information
+#Before landing this will pop up two-dimensional code
 firends=itchat.get_friends(update=True)[0:]
 
-#初始化
+#Initialization
 male=female=other=0
-#去掉0（自己）
+
+#Removing ourselves
 for i in firends[1:]:
     sex=i["Sex"]
     if sex==1:
@@ -17,21 +19,22 @@ for i in firends[1:]:
         female +=1
     else:
         other +=1
-#好友总数
+#Total of  our friends
 total=len(firends[1:])
-#输出性别比例
-print("男性朋友：  %2f%%" % (float(male)/total*100))
-print("女性朋友：  %2f%%" % (float(female)/total*100))
-print("不知性别朋友：  %2f%%" % (float(other)/total*100))
 
-#获取各个变量的函数
+#Print sex accounting
+print("Male：  %2f%%" % (float(male)/total*100))
+print("Female：  %2f%%" % (float(female)/total*100))
+print("Other：  %2f%%" % (float(other)/total*100))
+
+#Defining a function to achieve every variable
 def get_var(var):
     variable=[]
     for i in firends:
         value=i[var]
         variable.append(value)
     return variable
-# 获取变量
+#Achieve every variable
 NickName=get_var("NickName")
 Sex=get_var("Sex")
 Province=get_var("Province")
@@ -50,7 +53,7 @@ data={
 frame=DataFrame(data)
 frame.to_csv("../DataSaving/data.csv",index=True)
 
-#获取个性签名，制作词云图
+#Get personalized signature and making word clouds
 
 import re
 siglist=[]
@@ -61,12 +64,12 @@ for i in firends:
     siglist.append(signature)
 text="".join(siglist)
 
-# 分词
+# Cut every word
 import jieba
 wordlist=jieba.cut(text,cut_all=True)
 word_space_split=" ".join(wordlist)
 
-# 画图
+#Making word clouds
 import matplotlib.pylab as plt
 from wordcloud import WordCloud,ImageColorGenerator
 import numpy as np
